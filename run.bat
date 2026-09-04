@@ -1,8 +1,5 @@
 @echo off
 cd /d %~dp0
-if exist .venv\Scripts\python.exe (
-    .venv\Scripts\python.exe bot.py
-) else (
-    python bot.py
-)
+"D:\codex\python313\python.exe" bot.py
 pause
+

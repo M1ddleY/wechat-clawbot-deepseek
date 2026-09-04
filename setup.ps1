@@ -1,11 +1,8 @@
-# 一键创建虚拟环境并安装依赖
-$ErrorActionPreference = "Stop"
-if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
-    Write-Host "[错误] 未检测到 Python，请先安装 Python 3.10+。"
+# 本项目使用嵌入版 Python（D:\codex\python313），无需系统安装 Python。
+$py = "D:\codex\python313\python.exe"
+if (-not (Test-Path $py)) {
+    Write-Host "[错误] 未找到 $py，请先安装/解压嵌入版 Python 3.13 到该路径。"
     exit 1
 }
-python -m venv .venv
-if ($LASTEXITCODE -ne 0) { Write-Host "[错误] 创建虚拟环境失败。"; exit 1 }
-.\.venv\Scripts\python.exe -m pip install --upgrade pip | Out-Null
-.\.venv\Scripts\pip.exe install -r requirements.txt
-Write-Host "`n[完成] 依赖已安装。运行 run.bat 启动机器人。"
+& $py -m pip install --no-warn-script-location -r requirements.txt
+Write-Host "`n[完成] 依赖已就绪。运行 run.bat 启动机器人。"

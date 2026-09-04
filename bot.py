@@ -1,6 +1,17 @@
 """微信 ClawBot + DeepSeek 自动回复机器人主程序。"""
 from __future__ import annotations
 
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Windows 控制台默认非 UTF-8，强制输出 UTF-8 避免中文乱码
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 import asyncio
 import time
 import aiohttp
@@ -210,4 +221,6 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("\n已停止 Bot。")
+
+
 

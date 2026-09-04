@@ -11,18 +11,14 @@
 - 指令：`/help`、`/clear`、`/time`、`/重新连接`
 - 图片/语音/文件等消息会提示暂不支持
 
-## 前置条件
-- **Python 3.10+**
-- 依赖：`aiohttp`、`requests`、`qrcode[pil]`
-- 手机微信 **iOS 8.0.70+ / 最新安卓版**，且在「我 → 设置 → 插件」启用 **微信ClawBot**
-- 一个 **DeepSeek API Key**（https://platform.deepseek.com ）
-
-## 安装
-```bash
-# 创建虚拟环境并安装依赖
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
+## 环境（已就绪）
+本机无系统 Python，项目使用**嵌入式 Python 3.13.15**，位于：
 ```
+D:\codex\python313\python.exe
+```
+所有依赖（aiohttp / requests / qrcode / pytest）已安装到该解释器。
+- 手机微信需 **iOS 8.0.70+ / 最新安卓版**，并在「我 → 设置 → 插件」启用 **微信ClawBot**
+- 需要一个 **DeepSeek API Key**（https://platform.deepseek.com ）
 
 ## 配置
 编辑 `config.json`，填入 DeepSeek Key：
@@ -37,22 +33,26 @@ python -m venv .venv
   }
 }
 ```
-- `model`：按你 DeepSeek 账号实际可用的模型名调整（如 `deepseek-v4-flash` / `deepseek-chat`）。
+- `model`：按你 DeepSeek 账号实际可用的模型名调整。
 - `prompt`：AI 人设，可自由修改。
 
 ## 运行
+双击 `run.bat`，或手动：
 ```bash
-.venv\Scripts\python bot.py
+D:\codex\python313\python.exe bot.py
 ```
 首次运行会显示二维码，用手机微信扫码并确认；成功后登录态保存到 `weixin_state.json`，下次启动自动复用。
-
-> 也可直接双击 `run.bat`（自动激活虚拟环境并启动）。
 
 ## 使用
 - 登录后在微信里给这个账号发消息，炸鸡会回复。
 - 常见指令见 `/help`。
 
+## 测试
+```bash
+D:\codex\python313\python.exe -m pytest tests/ -v
+```
+
 ## 注意
 - `config.json`、`weixin_state.json`、二维码图片等**含敏感凭据，已加入 .gitignore，勿提交**。
-- 请遵守《微信 ClawBot 功能使用条款》及当地法律法规，勿用于骚扰或违法违规用途。
+- 请遵守《微信 ClawBot 功能使用条款》及当地法律法规。
 - 本机运行，电脑关机即下线；如需 24h 在线请部署到服务器/NAS。
