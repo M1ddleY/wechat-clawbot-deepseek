@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+config.json
+weixin_state.json
+qrcode.*
+login_qrcode.png
+.env
