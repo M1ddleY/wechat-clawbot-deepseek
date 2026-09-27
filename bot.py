@@ -28,6 +28,7 @@ from ilink_client import (
     extract_message_text,
     get_typing_ticket,
     get_updates,
+    notify_lifecycle,
     send_message,
     send_typing,
 )
@@ -152,6 +153,7 @@ async def main() -> None:
 
     async with aiohttp.ClientSession() as session:
         state = await ensure_login(session, state)
+        await notify_lifecycle(session, "ilink/bot/msg/notifystart", state.get("bot_token"), state.get("baseurl") or BASE_URL)
         token_ref = [state.get("bot_token") or ""]
         base_url_ref = [state.get("baseurl") or BASE_URL]
         get_updates_buf = str(state.get("get_updates_buf") or "")
@@ -213,6 +215,11 @@ async def main() -> None:
         except KeyboardInterrupt:
             print("\n已停止 Bot。")
         finally:
+            if state.get("bot_token"):
+                try:
+                    await notify_lifecycle(session, "ilink/bot/msg/notifystop", state.get("bot_token"), state.get("baseurl") or BASE_URL)
+                except Exception:
+                    pass
             await client.aclose()
 
 

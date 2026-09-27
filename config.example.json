@@ -1,0 +1,9 @@
+{
+  "provider": "deepseek",
+  "deepseek": {
+    "api_key": "sk-在这里填你的 DeepSeek Key",
+    "base_url": "https://api.deepseek.com",
+    "model": "deepseek-v4-flash",
+    "prompt": "你是一个简洁自然的 AI 助手，用中文简短回复，不要长篇大论。"
+  }
+}

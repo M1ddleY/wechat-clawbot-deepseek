@@ -268,6 +268,26 @@ async def get_typing_ticket(session, token, base_url, user_id: str, context_toke
     return str(cached.get("typing_ticket") or "")
 
 
+async def notify_lifecycle(session, endpoint, token, base_url):
+    """发送 notifystart / notifystop 生命周期通知（尽力而为）。"""
+    try:
+        result = await api_post(
+            session,
+            endpoint,
+            {"base_info": base_info()},
+            token,
+            base_url or BASE_URL,
+            timeout=CONFIG_TIMEOUT,
+        )
+        ensure_business_success(result, endpoint)
+        return True
+    except ILinkAPIError as exc:
+        if exc.is_stale_token:
+            raise
+        print("[生命周期] {} 通知失败: {}".format(endpoint, exc))
+        return False
+
+
 def extract_message_text(msg: dict) -> str:
     parts = []
     for item in msg.get("item_list") or []:

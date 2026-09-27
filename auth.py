@@ -72,6 +72,9 @@ def _render_generated_qr(content: str) -> None:
     qr = qrcode.QRCode(border=1)
     qr.add_data(content)
     qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save(QRCODE_PNG)
+    print("二维码图片已保存到: {}".format(QRCODE_PNG))
     matrix = qr.get_matrix()
     print()
     for row in matrix:
@@ -118,12 +121,14 @@ async def render_qr(session, content: str) -> None:
     if content.startswith("data:image/") or content.startswith("<svg"):
         if _save_qr_png(content):
             return
-    elif content.startswith("http"):
-        if await _render_qr_from_url(session, content):
-            return
-    else:
-        if _save_qr_png(content):
-            return
+        _render_generated_qr(content)
+        return
+    if content.startswith("http"):
+        # iLink 的 qrcode_img_content 是扫码地址 URL，直接本地生成二维码
+        _render_generated_qr(content)
+        return
+    if _save_qr_png(content):
+        return
     _render_generated_qr(content)
 
 
@@ -312,3 +317,4 @@ def apply_new_login(state: dict, login_result: dict) -> dict:
     # 账号发生变化时清空游标
     save_state(state)
     return state
+
